@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Carnets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            margin: 20px;
+            box-sizing: border-box;
+            flex-wrap: wrap;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .form-section, .preview-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            padding: 5px 10px; /* Adjust padding for file input */
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* ID Card Preview Styles */
+        .id-card {
+            width: 320px; /* Standard ID card width */
+            height: 350px; /* Standard ID card height */
+            background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
+            border: 1px solid #ccc;
+            border-radius: 35px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+            margin: auto; /* Center the card in its section */
+        }
+
+        .id-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://via.placeholder.com/600x300/e0f0ff/99d0ff?text=') no-repeat center center; /* Placeholder background graphic */
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .id-card-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .id-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .id-card p {
+            color: #34495e;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .id-card-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: #eee;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+            margin-bottom: 15px;
+            display: block; /* Ensure it's treated as a block element for margin-auto */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .id-card-photo.default {
+            background-color: #ccc; /* Placeholder color for default photo */
+        }
+    </style>fdv0i0i
+</head>
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2>Generador de Carnets</h2>
+            <div class="form-group">
+                <label for="fullName">Nombre Completo:</label>
+                <input type="text" id="fullName" placeholder="Ej: Juan Pérez">
+            </div>
+            <div class="form-group">
+                <label for="idNumber">Número de Identificación:</label>
+                <input type="text" id="idNumber" placeholder="Ej: 12345678">
+            </div>
+            <div class="form-group">
+                <label for="fullGrade">Grado/Seccion Completo:</label>
+                <input type="text" id="fullGrade" placeholder="Ej: Primer Grado A">
+            <div class="form-group">
+                <label for="idPhoto">Foto (PNG o JPG):</label>
+                <input type="file" id="idPhoto" accept="image/png, image/jpeg">
+            </div>
+            <button onclick="generateCard()">Generar Carnet</button>
+            <button onclick="printCard()">Imprimir Carnet</button>
+        </div>
+
+        <div class="preview-section">
+            <h2>Vista Previa del Carnet</h2>
+            <div class="id-card">
+                <div class="id-card-content">
+                    <img src="https://via.placeholder.com/90" alt="Foto" class="id-card-photo default" id="previewPhoto">
+                    <h3>Instituto Cecilio Acosta</h3>
+                    <h4 id="previewName">NOMBRE COMPLETO</h4>
+                    <h5 id="previewGrade">GRADO COMPLETO</h5>
+                    <p>ID: <span id="previewIdNumber">00000000</span></p>
+                    <div class="carnet-footer">
+                    <p>Carnet Escolar - Válido para el año escolar 2025</p>
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateCard() {
+            const fullName = document.getElementById('fullName').value.toUpperCase();
+            const fullGrade = document.getElementById('fullGrade').value.toUpperCase();
+            const idNumber = document.getElementById('idNumber').value;
+            const photoInput = document.getElementById('idPhoto');
+            const previewName = document.getElementById('previewName');
+            const previewGrade = document.getElementById('previewGrade');
+            const previewIdNumber = document.getElementById('previewIdNumber');
+            const previewPhoto = document.getElementById('previewPhoto');
+
+            previewName.textContent = fullName || 'NOMBRE COMPLETO';
+            previewGrade.textContent = fullGrade || 'GRADO COMPLETO';
+            previewIdNumber.textContent = idNumber || '00000000';
+
+            if (photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewPhoto.src = e.target.result;
+                    previewPhoto.classList.remove('default');
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                previewPhoto.src = 'https://via.placeholder.com/90'; // Reset to default placeholder
+                previewPhoto.classList.add('default');
+            }
+        }
+
+        function printCard() {
+            const cardToPrint = document.querySelector('.id-card');
+            const originalContents = document.body.innerHTML;
+            const printContents = cardToPrint.outerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload(); // Reload to restore original page content and functionality
+        }
+
+        // Generate card on initial load with placeholders
+        document.addEventListener('DOMContentLoaded', generateCard);
+    </script>
+</body>
+</html>
